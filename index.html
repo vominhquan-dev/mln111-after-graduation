@@ -8,6 +8,13 @@
   </head>
 
   <body>
+    <div class="start-screen" id="startScreen">
+      <div class="start-content">
+        <img src="assets/shared/backgound-image.jpg" alt="Ảnh khởi động" />
+        <button id="startButton">Chơi</button>
+      </div>
+    </div>
+
     <div class="container" id="gameContainer">
       <h1>Tốt Nghiệp Rồi… Rồi Sao Nữa?</h1>
 
@@ -39,6 +46,17 @@
       <div id="result"></div>
 
       <div class="memory-box hidden" id="memoryBox"></div>
+    </div>
+
+    <div class="complete-modal hidden" id="completeModal">
+      <div class="complete-modal-content">
+        <h3>🎬 Mảnh Ký Ức Hoàn Chỉnh</h3>
+        <p class="complete-subtitle">
+          Đã ghép xong cảnh này. Xem lại nội dung và tiếp tục sang cảnh kế tiếp.
+        </p>
+        <div class="complete-memory" id="completeMemory"></div>
+        <button id="completeNextBtn">Cảnh Tiếp Theo</button>
+      </div>
     </div>
 
     <!-- GALLERY PAGE -->
