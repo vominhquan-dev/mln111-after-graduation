@@ -143,6 +143,9 @@ const fragmentUnlockQuestion = {
 
 const fragmentContainer = document.getElementById("fragmentContainer");
 const dropContainer = document.getElementById("dropContainer");
+const mysteryOverlay = document.getElementById("mysteryOverlay");
+const mysteryBoxContainer = document.getElementById("mysteryBoxContainer");
+const mysteryMessage = document.getElementById("mysteryMessage");
 const sceneTitle = document.getElementById("sceneTitle");
 const result = document.getElementById("result");
 const memoryBox = document.getElementById("memoryBox");
@@ -158,6 +161,11 @@ const fragmentModal = document.getElementById("fragmentModal");
 const modalQuestionText = document.getElementById("modalQuestionText");
 const modalOptionsContainer = document.getElementById("modalOptionsContainer");
 const modalCloseBtn = document.getElementById("modalCloseBtn");
+
+let boxShuffleInterval = null;
+let secretBoxIndex = null;
+let scene4FoundHiddenFragment = false;
+let isMysteryShuffling = false;
 
 function initGame() {
   // Collect all fragments from all scenes
@@ -217,8 +225,22 @@ function loadScene(index) {
     dropContainer.appendChild(zone);
   }
 
+  // Scene 4 special: mystery box puzzle for fragment 3
+  if (index === 3) {
+    mysteryOverlay.classList.remove("hidden");
+    scene4FoundHiddenFragment = false;
+    setupScene4MysteryBoxes(scene);
+  } else {
+    mysteryOverlay.classList.add("hidden");
+    mysteryMessage.innerText = "";
+    clearMysteryShuffle();
+    isMysteryShuffling = false;
+  }
+
   // CREATE FRAGMENTS (with shuffle)
-  const shuffledFragments = shuffleArray(scene.fragments);
+  const visibleFragments =
+    index === 3 ? scene.fragments.filter((f) => f.id !== 3) : scene.fragments;
+  const shuffledFragments = shuffleArray(visibleFragments);
   shuffledFragments.forEach((f) => {
     const img = document.createElement("img");
     img.src = f.src;
@@ -272,7 +294,220 @@ function addDrop(zone) {
   });
 }
 
+function setupScene4MysteryBoxes(scene) {
+  clearMysteryShuffle();
+  mysteryBoxContainer.innerHTML = "";
+  mysteryMessage.innerText = "Xem kỹ để biết mảnh ở hộp nào...";
+  scene4FoundHiddenFragment = false;
+  secretBoxIndex = Math.floor(Math.random() * 3);
+  isMysteryShuffling = true;
+
+  for (let i = 0; i < 3; i++) {
+    const box = document.createElement("div");
+    box.classList.add("mystery-box", "disabled");
+    box.dataset.boxIndex = i;
+    box.dataset.position = i;
+    box.dataset.checked = "false";
+    box.dataset.disabled = "true";
+    box.innerHTML = `
+      <div class="box-icon">
+        <img src="assets/shared/secrect-box.png" alt="Hộp bí ẩn" />
+      </div>
+      <div class="box-content">?</div>
+    `;
+
+    box.addEventListener("click", () => {
+      if (
+        box.dataset.checked === "true" ||
+        scene4FoundHiddenFragment ||
+        isMysteryShuffling
+      ) {
+        return;
+      }
+      handleMysteryBoxClick(box, scene);
+    });
+
+    mysteryBoxContainer.appendChild(box);
+  }
+
+  positionMysteryBoxes();
+  revealSecretBox(scene);
+}
+
+function revealSecretBox(scene) {
+  const correctBox = mysteryBoxContainer.querySelector(
+    `[data-box-index="${secretBoxIndex}"]`,
+  );
+  if (!correctBox) return;
+
+  correctBox.classList.add("correct");
+  correctBox.dataset.disabled = "true";
+  correctBox.innerHTML = `
+    <div class="box-content found">Mảnh 3 ở đây!</div>
+  `;
+
+  const hiddenFragment = scene.fragments.find((f) => f.id === 3);
+  if (hiddenFragment) {
+    correctBox.querySelector(".box-content").innerHTML = `
+      <img src="${hiddenFragment.src}" class="box-preview" />
+      <div>Đây là mảnh 3</div>
+    `;
+  }
+
+  mysteryMessage.innerText = "Đã thấy vị trí mảnh. Hộp sẽ tráo trong 3 giây...";
+
+  setTimeout(() => {
+    resetBoxesAfterReveal();
+    startMysteryShuffle();
+    setTimeout(() => {
+      stopMysteryShuffle();
+      mysteryMessage.innerText = "Chọn hộp bạn nghĩ có mảnh 3.";
+      enableRemainingBoxes();
+    }, 3000);
+  }, 2000);
+}
+
+function resetBoxesAfterReveal() {
+  Array.from(mysteryBoxContainer.children).forEach((box) => {
+    box.classList.remove("correct");
+    box.dataset.disabled = "true";
+    if (box.dataset.checked !== "true") {
+      box.innerHTML = `
+        <div class="box-icon">
+          <img src="assets/shared/secrect-box.png" alt="Hộp bí ẩn" />
+        </div>
+        <div class="box-content">?</div>
+      `;
+    }
+  });
+}
+
+function enableRemainingBoxes() {
+  Array.from(mysteryBoxContainer.children).forEach((box) => {
+    if (box.dataset.checked !== "true") {
+      box.classList.remove("disabled");
+      box.dataset.disabled = "false";
+    }
+  });
+}
+
+function startMysteryShuffle() {
+  clearMysteryShuffle();
+  isMysteryShuffling = true;
+  boxShuffleInterval = setInterval(() => {
+    const boxes = Array.from(mysteryBoxContainer.children).filter(
+      (box) => box.dataset.checked === "false",
+    );
+    if (boxes.length <= 1) {
+      clearMysteryShuffle();
+      return;
+    }
+
+    const [boxA, boxB] = chooseTwoRandomBoxes(boxes);
+    const posA = parseInt(boxA.dataset.position, 10);
+    const posB = parseInt(boxB.dataset.position, 10);
+
+    boxA.dataset.position = posB;
+    boxB.dataset.position = posA;
+
+    boxA.classList.add("moving");
+    boxB.classList.add("moving");
+    positionMysteryBoxes();
+
+    setTimeout(() => {
+      boxA.classList.remove("moving");
+      boxB.classList.remove("moving");
+    }, 1200);
+  }, 1200);
+}
+
+function chooseTwoRandomBoxes(boxes) {
+  if (boxes.length <= 2) {
+    return boxes;
+  }
+  const idxA = Math.floor(Math.random() * boxes.length);
+  let idxB = Math.floor(Math.random() * boxes.length);
+  while (idxB === idxA) {
+    idxB = Math.floor(Math.random() * boxes.length);
+  }
+  return [boxes[idxA], boxes[idxB]];
+}
+
+function stopMysteryShuffle() {
+  clearMysteryShuffle();
+  isMysteryShuffling = false;
+}
+
+function clearMysteryShuffle() {
+  if (boxShuffleInterval) {
+    clearInterval(boxShuffleInterval);
+    boxShuffleInterval = null;
+  }
+}
+
+function handleMysteryBoxClick(box, scene) {
+  const boxIndex = parseInt(box.dataset.boxIndex, 10);
+  const isCorrect = boxIndex === secretBoxIndex;
+
+  if (isMysteryShuffling) {
+    return;
+  }
+
+  if (isCorrect) {
+    box.classList.add("correct");
+    box.dataset.checked = "true";
+    box.classList.remove("disabled");
+    box.innerHTML = `
+      <div class="box-content found">Mảnh 3 ở đây!</div>
+    `;
+    scene4FoundHiddenFragment = true;
+    mysteryMessage.innerText =
+      "Chính xác! Mảnh 3 đã được tìm thấy. Hộp sẽ đóng lại và mảnh sẽ xuất hiện.";
+    revealScene4HiddenFragment(scene);
+    setTimeout(() => {
+      mysteryOverlay.classList.add("hidden");
+      mysteryMessage.innerText = "";
+    }, 700);
+  } else {
+    box.classList.add("wrong");
+    box.dataset.checked = "true";
+    box.classList.add("disabled");
+    box.innerHTML = `
+      <div class="box-content">Không có mảnh</div>
+    `;
+    mysteryMessage.innerText = "Sai rồi! Chọn lại một hộp khác.";
+  }
+}
+
+function revealScene4HiddenFragment(scene) {
+  const hiddenFragment = scene.fragments.find((f) => f.id === 3);
+  if (!hiddenFragment) return;
+
+  const img = document.createElement("img");
+  img.src = hiddenFragment.src;
+  img.classList.add("fragment");
+  img.draggable = true;
+  img.dataset.id = hiddenFragment.id;
+  img.dataset.sceneId = 3;
+  img.dataset.fragmentId = hiddenFragment.id;
+  addDrag(img);
+  fragmentContainer.appendChild(img);
+}
+
+function positionMysteryBoxes() {
+  const positions = [0, 260, 520];
+  Array.from(mysteryBoxContainer.children).forEach((box) => {
+    const pos = parseInt(box.dataset.position, 10);
+    box.style.left = `${positions[pos]}px`;
+  });
+}
+
 function resetScene() {
+  if (currentScene === 3) {
+    loadScene(currentScene);
+    return;
+  }
+
   document.querySelectorAll(".drop-zone img").forEach((img) => {
     fragmentContainer.appendChild(img);
   });
@@ -290,6 +525,12 @@ function resetScene() {
 }
 
 document.getElementById("checkBtn").addEventListener("click", () => {
+  if (currentScene === 3 && !scene4FoundHiddenFragment) {
+    result.innerHTML =
+      "⚠️ Bạn phải mở hộp bí ẩn và tìm mảnh 3 trước khi kiểm tra.";
+    return;
+  }
+
   if (sceneComplete) {
     nextScene();
     return;
