@@ -1,77 +1,102 @@
 <!doctype html>
 <html lang="vi">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Fragment Memory Game</title>
-  <link rel="stylesheet" href="style.css"/>
-</head>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Fragment Memory Game</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
 
-<body>
-  <div class="container" id="gameContainer">
+  <body>
+    <div class="container" id="gameContainer">
+      <h1>Tốt Nghiệp Rồi… Rồi Sao Nữa?</h1>
 
-    <h1>Tốt Nghiệp Rồi… Rồi Sao Nữa?</h1>
-
-    <div class="story-box">
-      <h2 id="sceneTitle">Loading...</h2>
-      <p>Sắp xếp ký ức để mở cinematic.</p>
-    </div>
-
-    <!-- DROP ZONES -->
-    <div class="drop-container" id="dropContainer"></div>
-
-    <!-- FRAGMENTS -->
-    <div class="fragments" id="fragmentContainer"></div>
-
-    <!-- BUTTONS -->
-    <div class="button-group">
-      <button id="checkBtn">Kiểm Tra</button>
-      <button id="resetBtn">Làm Mới</button>
-    </div>
-
-    <div id="result"></div>
-
-    <div class="memory-box hidden" id="memoryBox"></div>
-
-  </div>
-
-  <!-- GALLERY PAGE -->
-  <div class="gallery-page hidden" id="galleryPage">
-    <h2>Chuỗi Ký Ức</h2>
-    <div class="gallery-container">
-      <button class="gallery-btn prev-btn" id="prevBtn">←</button>
-      <div class="gallery-image-wrapper">
-        <img id="galleryImage" />
+      <div class="story-box">
+        <h2 id="sceneTitle">Loading...</h2>
+        <p>Sắp xếp ký ức để mở cinematic.</p>
       </div>
-      <button class="gallery-btn next-btn" id="nextBtn">→</button>
-    </div>
-    <p class="gallery-counter"><span id="currentIndex">1</span>/<span id="totalIndex">18</span></p>
-    <button class="next-section-btn" id="nextSectionBtn">❓ Phần Câu Hỏi và Lý Thuyết</button>
-  </div>
 
-  <!-- QUESTIONS PAGE -->
-  <div class="questions-page hidden" id="questionsPage">
-    <div class="questions-container">
-      <h2>Câu Hỏi và Lý Thuyết</h2>
-      
-      <div class="question-box" id="questionBox">
-        <div class="situation">
-          <strong>Tình huống:</strong>
-          <p id="situationText"></p>
-        </div>
-        
-        <div class="question-text">
-          <strong>Câu hỏi:</strong>
-          <p id="questionText"></p>
-        </div>
-        
-        <div class="options" id="optionsContainer"></div>
+      <!-- DROP ZONES -->
+      <div class="drop-container" id="dropContainer"></div>
+
+      <!-- FRAGMENTS -->
+      <div class="fragments" id="fragmentContainer"></div>
+
+      <!-- BUTTONS -->
+      <div class="button-group">
+        <button id="checkBtn">Kiểm Tra</button>
+        <button id="resetBtn">Làm Mới</button>
       </div>
-      
-      <p class="question-counter"><span id="questionIndex">1</span>/<span id="totalQuestions">2</span></p>
-    </div>
-  </div>
 
-  <script src="script.js"></script>
-</body>
+      <div id="result"></div>
+
+      <div class="memory-box hidden" id="memoryBox"></div>
+    </div>
+
+    <!-- GALLERY PAGE -->
+    <div class="gallery-page hidden" id="galleryPage">
+      <h2>Chuỗi Ký Ức</h2>
+      <div class="gallery-container">
+        <button class="gallery-btn prev-btn" id="prevBtn">←</button>
+        <div class="gallery-image-wrapper">
+          <img id="galleryImage" />
+        </div>
+        <button class="gallery-btn next-btn" id="nextBtn">→</button>
+      </div>
+      <p class="gallery-counter">
+        <span id="currentIndex">1</span>/<span id="totalIndex">18</span>
+      </p>
+      <button class="next-section-btn" id="nextSectionBtn">
+        ❓ Phần Câu Hỏi và Lý Thuyết
+      </button>
+    </div>
+
+    <!-- QUESTIONS PAGE -->
+    <div class="questions-page hidden" id="questionsPage">
+      <div class="questions-container">
+        <h2>Câu Hỏi và Lý Thuyết</h2>
+
+        <div class="question-box" id="questionBox">
+          <div class="situation">
+            <strong>Tình huống:</strong>
+            <p id="situationText"></p>
+          </div>
+
+          <div class="question-text">
+            <strong>Câu hỏi:</strong>
+            <p id="questionText"></p>
+          </div>
+
+          <div class="options" id="optionsContainer"></div>
+        </div>
+
+        <p class="question-counter">
+          <span id="questionIndex">1</span>/<span id="totalQuestions">2</span>
+        </p>
+      </div>
+    </div>
+
+    <!-- FRAGMENT UNLOCK MODAL -->
+    <div class="modal hidden" id="fragmentModal">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3>🔓 Mở Khóa Mảnh Ký Ức</h3>
+        </div>
+
+        <div class="modal-body">
+          <div class="modal-question">
+            <p id="modalQuestionText"></p>
+          </div>
+
+          <div class="modal-options" id="modalOptionsContainer"></div>
+        </div>
+
+        <div class="modal-footer">
+          <button id="modalCloseBtn">Đóng</button>
+        </div>
+      </div>
+    </div>
+
+    <script src="script.js"></script>
+  </body>
 </html>
