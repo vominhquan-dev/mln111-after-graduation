@@ -149,12 +149,21 @@ const mysteryMessage = document.getElementById("mysteryMessage");
 const sceneTitle = document.getElementById("sceneTitle");
 const result = document.getElementById("result");
 const memoryBox = document.getElementById("memoryBox");
+const completeModal = document.getElementById("completeModal");
+const completeMemory = document.getElementById("completeMemory");
+const completeNextBtn = document.getElementById("completeNextBtn");
 const galleryPage = document.getElementById("galleryPage");
 const gameContainer = document.getElementById("gameContainer");
 const questionsPage = document.getElementById("questionsPage");
 const galleryImage = document.getElementById("galleryImage");
 const currentIndexDisplay = document.getElementById("currentIndex");
 const totalIndexDisplay = document.getElementById("totalIndex");
+const startScreen = document.getElementById("startScreen");
+const startButton = document.getElementById("startButton");
+
+startButton.addEventListener("click", () => {
+  startScreen.classList.add("hidden");
+});
 
 // Modal references
 const fragmentModal = document.getElementById("fragmentModal");
@@ -561,8 +570,10 @@ document.getElementById("checkBtn").addEventListener("click", () => {
     if (currentScene === scenes.length - 1) {
       document.getElementById("checkBtn").innerText =
         "📚 Xem lại toàn bộ ký ức";
+      showCompleteModal(scenes[currentScene].memory, true);
     } else {
       document.getElementById("checkBtn").innerText = "Cảnh Tiếp Theo";
+      showCompleteModal(scenes[currentScene].memory, false);
     }
 
     document.getElementById("resetBtn").style.display = "none";
@@ -592,6 +603,23 @@ function nextScene() {
 document.getElementById("resetBtn").addEventListener("click", () => {
   resetScene();
 });
+
+completeNextBtn.addEventListener("click", () => {
+  hideCompleteModal();
+  nextScene();
+});
+
+function showCompleteModal(memoryText, isLastScene) {
+  completeMemory.innerText = memoryText;
+  completeNextBtn.innerText = isLastScene
+    ? "📚 Xem lại toàn bộ ký ức"
+    : "Cảnh Tiếp Theo";
+  completeModal.classList.remove("hidden");
+}
+
+function hideCompleteModal() {
+  completeModal.classList.add("hidden");
+}
 
 function showGalleryImage() {
   if (allFragments.length > 0) {
