@@ -645,7 +645,82 @@ document.getElementById("nextBtn").addEventListener("click", () => {
 document.getElementById("nextSectionBtn").addEventListener("click", () => {
   galleryPage.classList.add("hidden");
   questionsPage.classList.remove("hidden");
+  currentQuestionIndex = 0;
+  loadQuestion();
 });
+
+// ========== QUESTIONS PAGE FUNCTIONS ==========
+
+const situationText = document.getElementById("situationText");
+const questionText = document.getElementById("questionText");
+const optionsContainer = document.getElementById("optionsContainer");
+const questionIndexDisplay = document.getElementById("questionIndex");
+const totalQuestionsDisplay = document.getElementById("totalQuestions");
+
+totalQuestionsDisplay.innerText = questions.length;
+
+function loadQuestion() {
+  if (currentQuestionIndex >= questions.length) {
+    showCompletionPage();
+    return;
+  }
+
+  const question = questions[currentQuestionIndex];
+
+  // Display situation and question
+  situationText.innerText = question.situation;
+  questionText.innerText = question.question;
+  questionIndexDisplay.innerText = currentQuestionIndex + 1;
+
+  // Clear options
+  optionsContainer.innerHTML = "";
+
+  // Add options
+  question.options.forEach((option, index) => {
+    const btn = document.createElement("button");
+    btn.classList.add("option-btn");
+    btn.innerText = option.text;
+    btn.dataset.correct = option.correct;
+
+    btn.addEventListener("click", () => {
+      handleQuestionAnswer(btn, option.correct, question.options);
+    });
+
+    optionsContainer.appendChild(btn);
+  });
+}
+
+function handleQuestionAnswer(btnElement, isCorrect, allOptions) {
+  // Disable all option buttons
+  document.querySelectorAll(".option-btn").forEach((btn) => {
+    btn.disabled = true;
+  });
+
+  if (isCorrect) {
+    btnElement.classList.add("selected-correct");
+    setTimeout(() => {
+      currentQuestionIndex++;
+      loadQuestion();
+    }, 1500);
+  } else {
+    btnElement.classList.add("selected-wrong");
+    setTimeout(() => {
+      alert("❌ Sai rồi! Hãy cố gắng lại.");
+      // Reset question
+      loadQuestion();
+    }, 1500);
+  }
+}
+
+function showCompletionPage() {
+  questionsPage.innerHTML = `
+    <div class="questions-container">
+      <h2>🎉 Chúc mừng!</h2>
+      <p>Bạn đã hoàn thành tất cả các câu hỏi. Cảm ơn bạn đã tham gia!</p>
+      <button onclick="location.reload()" style="background: #2563eb; color: white; padding: 15px 30px; margin-top: 30px; cursor: pointer;">Chơi Lại</button>
+    </div>
+  `;
+}
 
 // ========== FRAGMENT UNLOCK MODAL FUNCTIONS ==========
 
