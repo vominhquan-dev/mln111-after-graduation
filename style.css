@@ -8,7 +8,7 @@ body {
     "Segoe UI",
     sans-serif;
   /* Layer the existing radial gradient over the shared background scene image */
-  background-image: url("assets/shared/backgound-sence.png");
+  background-image: url("assets/shared/background-sence.png");
   background-size: cover, cover;
   background-position:
     center top,
@@ -94,13 +94,13 @@ h1 {
 }
 
 .story-box {
-  background-image: url("assets/shared/backgound-title.jpg");
-  background-size: cover;
+  background-image: url("assets/shared/background-title.png");
+  background-size: 100% 100%;
   background-position: center;
   background-repeat: no-repeat;
   padding: 25px 28px;
-  border-radius: 30px;
   margin-bottom: 24px;
+  min-height: 200px;
 }
 
 .story-box h2 {
@@ -140,7 +140,7 @@ h1 {
 }
 
 .drop-zone:nth-child(1) {
-  background-image: url("assets/shared/backgound-fegment1.png");
+  background-image: url("assets/shared/background-fegment1.png");
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -148,7 +148,7 @@ h1 {
 }
 
 .drop-zone:nth-child(2) {
-  background-image: url("assets/shared/backgound-fegment2.png");
+  background-image: url("assets/shared/background-fegment2.png");
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -156,7 +156,7 @@ h1 {
 }
 
 .drop-zone:nth-child(3) {
-  background-image: url("assets/shared/backgound-fegment3.png");
+  background-image: url("assets/shared/background-fegment3.png");
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
