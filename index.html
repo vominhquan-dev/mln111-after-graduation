@@ -10,7 +10,7 @@
   <body>
     <div class="start-screen" id="startScreen">
       <div class="start-content">
-        <img src="assets/shared/backgound-image.jpg" alt="Ảnh khởi động" />
+        <img src="assets/shared/background-image.jpg" alt="Ảnh khởi động" />
         <button id="startButton">Chơi</button>
       </div>
     </div>
@@ -22,6 +22,9 @@
         <h2 id="sceneTitle">Loading...</h2>
         <p>Sắp xếp ký ức để mở cinematic.</p>
       </div>
+
+      <!-- HINT BOX -->
+      <div class="hint-box hidden" id="hintBox"></div>
 
       <!-- DROP ZONES -->
       <div class="drop-container" id="dropContainer"></div>
@@ -46,6 +49,14 @@
       <div id="result"></div>
 
       <div class="memory-box hidden" id="memoryBox"></div>
+    </div>
+
+    <!-- Image Zoom Modal -->
+    <div class="zoom-modal hidden" id="zoomModal">
+      <div class="zoom-modal-content">
+        <span class="zoom-close">&times;</span>
+        <img id="zoomImage" src="" alt="Enlarged image" />
+      </div>
     </div>
 
     <div class="complete-modal hidden" id="completeModal">
