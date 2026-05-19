@@ -714,24 +714,20 @@ function loadQuestion() {
 }
 
 function handleQuestionAnswer(btnElement, isCorrect, allOptions) {
-  // Disable all option buttons
-  document.querySelectorAll(".option-btn").forEach((btn) => {
-    btn.disabled = true;
-  });
-
   if (isCorrect) {
+    // Correct answer - disable all buttons and show success
+    document.querySelectorAll(".option-btn").forEach((btn) => {
+      btn.disabled = true;
+    });
     btnElement.classList.add("selected-correct");
     setTimeout(() => {
       currentQuestionIndex++;
       loadQuestion();
     }, 1500);
   } else {
+    // Wrong answer - turn red and allow retry
     btnElement.classList.add("selected-wrong");
-    setTimeout(() => {
-      alert("❌ Sai rồi! Hãy cố gắng lại.");
-      // Reset question
-      loadQuestion();
-    }, 1500);
+    btnElement.disabled = true;
   }
 }
 

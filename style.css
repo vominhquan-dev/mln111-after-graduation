@@ -11,16 +11,12 @@ body {
     sans-serif;
   /* Layer the existing radial gradient over the shared background scene image */
   background-image: url("assets/shared/background-sence.png");
-  background-size: cover, cover;
-  background-position:
-    center top,
-    center top;
-  background-repeat: no-repeat, no-repeat;
+  background-size: cover;
+  background-position: center top;
+  background-repeat: no-repeat;
   color: #111827;
-  transform: scale(0.9);
-  transform-origin: top center;
-  width: 111.11%;
-  margin-left: -5.555%;
+  width: 100%;
+  overflow-x: hidden;
 }
 
 .start-screen {
@@ -48,8 +44,8 @@ body {
 }
 
 .start-content img {
-  width: 100%;
-  height: 100%;
+  width: 100vw;
+  height: 100vh;
   object-fit: cover;
   display: block;
   filter: brightness(0.68);
@@ -590,8 +586,8 @@ button:hover {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: #111;
-  color: white;
+  background: transparent;
+  color: #333;
 }
 
 .questions-container {
@@ -619,7 +615,7 @@ button:hover {
   text-align: left;
   margin-bottom: 25px;
   padding: 20px;
-  background: #2d2d2d;
+  background: transparent;
   border-radius: 8px;
   border-left: 4px solid #ff9800;
 }
@@ -633,14 +629,14 @@ button:hover {
   margin-top: 10px;
   font-size: 15px;
   line-height: 1.6;
-  color: #ddd;
+  color: #333;
 }
 
 .question-text {
   text-align: left;
   margin-bottom: 25px;
   padding: 20px;
-  background: #2d2d2d;
+  background: transparent;
   border-radius: 8px;
   border-left: 4px solid #2196f3;
 }
@@ -654,7 +650,7 @@ button:hover {
   margin-top: 10px;
   font-size: 16px;
   font-weight: bold;
-  color: #fff;
+  color: #333;
 }
 
 .options {
@@ -686,13 +682,15 @@ button:hover {
 .option-btn.selected-correct {
   background: #4caf50;
   border-color: #4caf50;
+  color: white;
   animation: fadeOutOthers 0.5s ease-in-out;
 }
 
 .option-btn.selected-wrong {
   background: #f44336;
   border-color: #f44336;
-  animation: fadeOut 0.5s ease-in-out forwards;
+  color: white;
+  animation: fadeOutWrong 0.5s ease-in-out forwards;
 }
 
 .option-btn.hidden {
@@ -706,6 +704,17 @@ button:hover {
   100% {
     opacity: 0;
     display: none;
+  }
+}
+
+@keyframes fadeOutWrong {
+  0% {
+    opacity: 1;
+    background: #f44336;
+    border-color: #f44336;
+  }
+  100% {
+    opacity: 0;
   }
 }
 
