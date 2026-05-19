@@ -23,6 +23,9 @@
         <p>Sắp xếp ký ức để mở cinematic.</p>
       </div>
 
+      <!-- HINT BOX -->
+      <div class="hint-box hidden" id="hintBox"></div>
+
       <!-- DROP ZONES -->
       <div class="drop-container" id="dropContainer"></div>
 
@@ -46,6 +49,14 @@
       <div id="result"></div>
 
       <div class="memory-box hidden" id="memoryBox"></div>
+    </div>
+
+    <!-- Image Zoom Modal -->
+    <div class="zoom-modal hidden" id="zoomModal">
+      <div class="zoom-modal-content">
+        <span class="zoom-close">&times;</span>
+        <img id="zoomImage" src="" alt="Enlarged image" />
+      </div>
     </div>
 
     <div class="complete-modal hidden" id="completeModal">

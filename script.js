@@ -125,6 +125,16 @@ const questions = [
       { text: "Phủ định của phủ định", correct: false },
     ],
   },
+  {
+    situation: "Minh mất ngủ lúc 2h sáng.",
+    question: "Ý thức Minh đang phản ánh điều gì?",
+    options: [
+      { text: "A. Ước mơ", correct: false },
+      { text: "B. Áp lực từ thực tế", correct: true },
+      { text: "C. Sự tưởng tượng", correct: false },
+      { text: "D. Ký ức", correct: false },
+    ],
+  },
 ];
 
 // OOP Fragment Unlock Question
@@ -132,12 +142,12 @@ const fragmentUnlockQuestion = {
   sceneId: 1, // Scene 2 (0-indexed)
   fragmentId: 2, // Fragment 2
   question:
-    "Đâu KHÔNG phải là một trong bốn tính chất chính của lập trình hướng đối tượng (OOP)?",
+    "Phân cảnh: Minh mất ngủ lúc 2h sáng. Ý thức Minh đang phản ánh điều gì?",
   options: [
-    { text: "A. Đóng gói (Encapsulation)", correct: false },
-    { text: "B. Kế thừa (Inheritance)", correct: false },
-    { text: "C. Biên dịch (Compilation)", correct: true },
-    { text: "D. Đa hình (Polymorphism)", correct: false },
+    { text: "A. Ước mơ", correct: false },
+    { text: "B. Áp lực từ thực tế", correct: true },
+    { text: "C. Sự tưởng tượng", correct: false },
+    { text: "D. Ký ức", correct: false },
   ],
 };
 
@@ -216,6 +226,7 @@ function loadScene(index) {
 
   result.innerHTML = "";
   memoryBox.classList.add("hidden");
+  document.getElementById("hintBox").classList.add("hidden");
   sceneComplete = false;
   hintShown = false;
   document.getElementById("checkBtn").innerText = "Kiểm Tra";
@@ -276,8 +287,10 @@ function addDrag(el) {
     dragged = el;
   });
 
-  // Click event to handle locked fragments
-  el.addEventListener("click", () => {
+  // Click event to handle locked fragments or zoom unlocked fragments
+  el.addEventListener("click", (e) => {
+    e.stopPropagation();
+
     const sceneId = parseInt(el.dataset.sceneId);
     const fragmentId = parseInt(el.dataset.fragmentId);
     const lockKey = `${sceneId}-${fragmentId}`;
@@ -285,8 +298,14 @@ function addDrag(el) {
     // Check if this fragment is locked
     if (lockedFragments[lockKey]) {
       showFragmentUnlockModal(el);
+    } else {
+      // Open zoom modal for unlocked fragments
+      openZoomModal(el.src);
     }
   });
+
+  // Set cursor to pointer for visual feedback
+  el.style.cursor = "pointer";
 }
 
 function addDrop(zone) {
@@ -527,6 +546,7 @@ function resetScene() {
 
   result.innerHTML = "";
   memoryBox.classList.add("hidden");
+  document.getElementById("hintBox").classList.add("hidden");
   sceneComplete = false;
   hintShown = false;
   document.getElementById("checkBtn").innerText = "Kiểm Tra";
@@ -578,7 +598,10 @@ document.getElementById("checkBtn").addEventListener("click", () => {
 
     document.getElementById("resetBtn").style.display = "none";
   } else {
-    result.innerHTML = "⚠️ Chưa đúng rồi!<br>" + scenes[currentScene].hint;
+    const hintBox = document.getElementById("hintBox");
+    hintBox.innerHTML = scenes[currentScene].hint;
+    hintBox.classList.remove("hidden");
+    result.innerHTML = "";
     memoryBox.classList.add("hidden");
     hintShown = true;
     document.getElementById("checkBtn").innerText = "Thử Lại";
@@ -702,20 +725,22 @@ function handleFragmentUnlockAnswer(
 
     // Show success message
     setTimeout(() => {
-      alert("✅ Chính xác! Mảnh đã mở khóa.");
+      showSuccessPopup("✅ Chính xác! Mảnh đã mở khóa.");
       closeFragmentModal();
     }, 500);
   } else {
-    // Wrong answer - hide fragment
+    // Wrong answer - show popup to retry
     btnElement.classList.add("wrong");
 
-    // Hide fragment
+    // Show error popup and allow retry
     setTimeout(() => {
-      fragmentElement.style.display = "none";
-      alert(
-        "❌ Sai rồi! Mảnh sẽ biến mất. Hãy trả lời câu hỏi chính xác để mở khóa.",
-      );
-      closeFragmentModal();
+      showWrongPopup("❌ Sai rồi! Hãy chọn lại.");
+
+      // Re-enable buttons for retry
+      document.querySelectorAll(".modal-option-btn").forEach((btn) => {
+        btn.disabled = false;
+        btn.classList.remove("wrong");
+      });
     }, 500);
   }
 }
@@ -739,5 +764,142 @@ modalCloseBtn.addEventListener("click", () => {
 fragmentModal.addEventListener("click", (e) => {
   if (e.target === fragmentModal) {
     closeFragmentModal();
+  }
+});
+
+// ========== SUCCESS POPUP FUNCTIONALITY ==========
+
+function showSuccessPopup(message) {
+  // Create popup container
+  const popup = document.createElement("div");
+  popup.className = "success-popup";
+  popup.innerText = message;
+  popup.style.cssText = `
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: white;
+    color: #000;
+    padding: 30px 40px;
+    border-radius: 12px;
+    font-size: 18px;
+    font-weight: bold;
+    font-family: "Caveat", cursive;
+    z-index: 2000;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
+    animation: popupSlideIn 0.3s ease;
+  `;
+
+  document.body.appendChild(popup);
+
+  // Auto remove after 2 seconds
+  setTimeout(() => {
+    popup.style.animation = "popupSlideOut 0.3s ease";
+    setTimeout(() => popup.remove(), 300);
+  }, 2000);
+}
+
+function showWrongPopup(message) {
+  // Create popup container
+  const popup = document.createElement("div");
+  popup.className = "wrong-popup";
+  popup.innerText = message;
+  popup.style.cssText = `
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: #ffcccc;
+    color: #c00;
+    padding: 30px 40px;
+    border-radius: 12px;
+    font-size: 18px;
+    font-weight: bold;
+    font-family: "Caveat", cursive;
+    z-index: 2000;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
+    animation: popupSlideIn 0.3s ease;
+    border: 2px solid #c00;
+  `;
+
+  document.body.appendChild(popup);
+
+  // Auto remove after 1.5 seconds
+  setTimeout(() => {
+    popup.style.animation = "popupSlideOut 0.3s ease";
+    setTimeout(() => popup.remove(), 300);
+  }, 1500);
+}
+
+// Add CSS animation
+const style = document.createElement("style");
+style.textContent = `
+  @keyframes popupSlideIn {
+    from {
+      transform: translate(-50%, -50%) scale(0.5);
+      opacity: 0;
+    }
+    to {
+      transform: translate(-50%, -50%) scale(1);
+      opacity: 1;
+    }
+  }
+
+  @keyframes popupSlideOut {
+    from {
+      transform: translate(-50%, -50%) scale(1);
+      opacity: 1;
+    }
+    to {
+      transform: translate(-50%, -50%) scale(0.5);
+      opacity: 0;
+    }
+  }
+`;
+document.head.appendChild(style);
+
+// ========== IMAGE ZOOM FUNCTIONALITY ==========
+
+const zoomModal = document.getElementById("zoomModal");
+const zoomImage = document.getElementById("zoomImage");
+const zoomClose = document.querySelector(".zoom-close");
+
+// Open zoom modal when clicking on fragment image
+function openZoomModal(imageSrc) {
+  zoomImage.src = imageSrc;
+  zoomModal.classList.remove("hidden");
+}
+
+// Close zoom modal
+function closeZoomModal() {
+  zoomModal.classList.add("hidden");
+  zoomImage.src = "";
+}
+
+// Add click event listener to open zoom modal
+// This is called in loadScene when creating fragment images
+function addZoomListener(img) {
+  img.style.cursor = "pointer";
+  img.addEventListener("click", (e) => {
+    e.stopPropagation();
+    openZoomModal(img.src);
+  });
+}
+
+// Close button click
+zoomClose.addEventListener("click", closeZoomModal);
+
+// Close when clicking outside the image
+zoomModal.addEventListener("click", (e) => {
+  if (e.target === zoomModal) {
+    closeZoomModal();
+  }
+});
+
+// Close on Escape key
+document.addEventListener("keydown", (e) => {
+  if (e.key === "Escape") {
+    closeZoomModal();
   }
 });
