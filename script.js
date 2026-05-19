@@ -26,7 +26,7 @@ const scenes = [
     ],
     memory:
       "Phòng trọ buổi đêm. Mình ngồi trước laptop chỉnh CV, gửi đơn xin việc liên tục. Chuông email rơi lần lượt: 'We regret to inform you…' Lúc 2 giờ sáng, mình nằm nhìn lên trần nhà, tự hỏi liệu mình có thực sự đủ khả năng không.",
-    hint: "💡 Gợi ý: Theo dõi quá trình xin việc: đầu tiên chỉnh CV, sau đó gửi đơn, cuối cùng là nhận tin từ chối vào lúc 2 giờ sáng.",
+    hint: "💡 Gợi ý: Theo dõi quá trình xin việc: đầu tiên chỉnh CV và gửi đơn, CV bị từ chối và trằn trọc suy nghĩ lúc 2h sáng.",
   },
 
   {
@@ -41,7 +41,7 @@ const scenes = [
     ],
     memory:
       "Mạng xã hội full tin vui của bạn bè: 'Mình vừa được tuyển!', 'Công ty thứ 2 rồi!', 'Lương tốt lắm!'. Mình ngồi một mình ở quán cafe, cầm điện thoại rồi bỏ. Mẹ gọi hỏi 'Con tính khi nào đi làm chính thức?' Mình chỉ biết đáp 'Dạ… con vẫn đang tìm.'",
-    hint: "💡 Gợi ý: Sắp xếp theo cảm xúc: bạn bè thành công trên mạng → ngồi một mình ở cafe buồn bã → cuộc gọi từ mẹ hỏi về việc làm.",
+    hint: "💡 Gợi ý: Sắp xếp theo cảm xúc: Tin vui bạn bè thành công trên mạng → Cuộc gọi đến từ mẹ → Ngồi cafe một mình buồn bã.",
   },
 
   {
@@ -56,7 +56,7 @@ const scenes = [
     ],
     memory:
       "Công ty thực tập. Mình ngồi trước màn hình, làm task xong lại bị sửa. Deadline tối nay, nhưng task chưa hoàn thành. Ăn mì gói lúc nửa đêm, mắt mệt, lưng đau. Nhìn vào gương, mình thấy một phiên bản khác của chính mình mà không có gì tự hào.",
-    hint: "💡 Gợi ý: Theo thứ tự: làm việc tại công ty (bị sửa) → ăn mì gói đêm khuya → nhìn gương và cảm thấy khủng hoảng.",
+    hint: "💡 Gợi ý: Theo thứ tự: Làm việc tại công ty (bị sửa) → Làm việc deadline xuyên đêm → Ăn mì gói lúc nửa đêm.",
   },
 
   {
@@ -71,7 +71,7 @@ const scenes = [
     ],
     memory:
       "Những ngày đi qua, mình dần chuyên tâm hơn. Mở notebook học thêm kỹ năng mới, dậy sớm hơn, đi bộ buổi sáng. Chủ động trao đổi với đồng nghiệp, hỏi từng câu hỏi. Từng lần thất bại trở thành bài học. Từng áp lực nhỏ khiến mình mạnh mẽ hơn từng ngày.",
-    hint: "💡 Gợi ý: Sắp xếp các hành động tích cực: học notebook → dậy sớm đi bộ → trao đổi với đồng nghiệp.",
+    hint: "💡 Gợi ý: Sắp xếp các hành động tích cực: Minh học thêm kỹ năng, notebook lại, thường xuyên trao đổi với đồng nghiệp, dậy sớm tập thể dục và chạy bộ",
   },
 
   {
@@ -86,7 +86,7 @@ const scenes = [
     ],
     memory:
       "Hôm nay, mình ngồi ở cafe với những người bạn cũ. Nhìn lại ảnh tốt nghiệp trên điện thoại, mình cười nhẹ. Mình đã thay đổi, nhưng chưa hoàn toàn mất đi bản thân. Hoàng hôn chiếu vàng qua cửa kính, mình nhận ra: trưởng thành không phải là trở nên hoàn hảo, mà là biết cách sống với những không hoàn hảo đó.",
-    hint: "💡 Gợi ý: Sắp xếp quá trình nhận ra sự trưởng thành: ngồi cafe với bạn → xem lại ảnh cũ cười → hoàng hôn vàng và sự thấu hiểu.",
+    hint: "💡 Gợi ý: Sắp xếp quá trình nhận ra sự trưởng thành: Thử thách công việc vẫn còn, nhưng không còn áp lực như trước, trò chuyện với bạn bè và cười nhiều hơn, ngắm hoàng hôn và suy ngẫm, nhìn lại năm tháng đã qua",
   },
 ];
 
