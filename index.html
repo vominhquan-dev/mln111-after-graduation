@@ -15,40 +15,66 @@
       </div>
     </div>
 
-    <div class="container" id="gameContainer">
-      <h1>Tốt Nghiệp Rồi… Rồi Sao Nữa?</h1>
+    <div class="game-wrapper" id="gameWrapper">
+      <div class="container" id="gameContainer">
+        <h1>Tốt Nghiệp Rồi… Rồi Sao Nữa?</h1>
 
-      <div class="story-box">
-        <h2 id="sceneTitle">Loading...</h2>
-        <p>Sắp xếp ký ức để mở cinematic.</p>
-      </div>
-
-      <!-- HINT BOX -->
-      <div class="hint-box hidden" id="hintBox"></div>
-
-      <!-- DROP ZONES -->
-      <div class="drop-container" id="dropContainer"></div>
-
-      <!-- FRAGMENT CONTAINER -->
-      <div class="fragments" id="fragmentContainer"></div>
-
-      <!-- Mystery overlay for Scene 4 -->
-      <div class="mystery-overlay hidden" id="mysteryOverlay">
-        <div class="mystery-inner">
-          <div class="mystery-message" id="mysteryMessage"></div>
-          <div class="mystery-container" id="mysteryBoxContainer"></div>
+        <div class="story-box">
+          <div>
+            <h2 id="sceneTitle">Loading...</h2>
+            <p>Sắp xếp ký ức để mở cinematic.</p>
+          </div>
+          <!-- RIGHT SIDEBAR TUTORIAL -->
+          <div class="sidebar-tutorial" id="sidebarTutorial">
+            <img id="tutorialImg" src="" alt="Tutorial" />
+          </div>
         </div>
+
+        <!-- HINT BOX -->
+        <div class="hint-box hidden" id="hintBox"></div>
+
+        <!-- DROP ZONES -->
+        <div class="drop-container" id="dropContainer"></div>
+
+        <!-- FRAGMENT CONTAINER -->
+        <div class="fragments" id="fragmentContainer"></div>
+
+        <!-- Mystery overlay for Scene 4 -->
+        <div class="mystery-overlay hidden" id="mysteryOverlay">
+          <div class="mystery-inner">
+            <div class="mystery-message" id="mysteryMessage"></div>
+            <div class="mystery-container" id="mysteryBoxContainer"></div>
+          </div>
+        </div>
+
+        <!-- Scene 6 Choice-based System -->
+        <div class="scene6-choice-container hidden" id="scene6ChoiceContainer">
+          <div class="scene6-display-area">
+            <div class="scene6-current-fragment">
+              <img id="scene6CurrentFragment" src="" alt="Current fragment" />
+            </div>
+            <button id="scene6ActivateBtn" class="scene6-action-btn">
+              Kích Hoạt Liên Tưởng
+            </button>
+          </div>
+          <div class="scene6-choice-area hidden" id="scene6ChoiceArea">
+            <div class="scene6-choice-content">
+              <p id="scene6ChoiceText"></p>
+              <div class="scene6-choices" id="scene6Choices"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- BUTTONS -->
+        <div class="button-group">
+          <button id="checkBtn">Kiểm Tra</button>
+          <button id="resetBtn">Làm Mới</button>
+        </div>
+
+        <div id="result"></div>
+
+        <div class="memory-box hidden" id="memoryBox"></div>
       </div>
-
-      <!-- BUTTONS -->
-      <div class="button-group">
-        <button id="checkBtn">Kiểm Tra</button>
-        <button id="resetBtn">Làm Mới</button>
-      </div>
-
-      <div id="result"></div>
-
-      <div class="memory-box hidden" id="memoryBox"></div>
     </div>
 
     <!-- Image Zoom Modal -->

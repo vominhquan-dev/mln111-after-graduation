@@ -83,6 +83,7 @@ const scenes = [
       { id: 1, src: "assets/scene6/sc6_fg1.png" },
       { id: 2, src: "assets/scene6/sc6_fg2.png" },
       { id: 3, src: "assets/scene6/sc6_fg3.png" },
+      { id: 4, src: "assets/scene6/sc6_fg4.png" },
     ],
     memory:
       "Hôm nay, mình ngồi ở cafe với những người bạn cũ. Nhìn lại ảnh tốt nghiệp trên điện thoại, mình cười nhẹ. Mình đã thay đổi, nhưng chưa hoàn toàn mất đi bản thân. Hoàng hôn chiếu vàng qua cửa kính, mình nhận ra: trưởng thành không phải là trở nên hoàn hảo, mà là biết cách sống với những không hoàn hảo đó.",
@@ -171,6 +172,14 @@ const totalIndexDisplay = document.getElementById("totalIndex");
 const startScreen = document.getElementById("startScreen");
 const startButton = document.getElementById("startButton");
 
+// Scene 6 choice container references
+const scene6ChoiceContainer = document.getElementById("scene6ChoiceContainer");
+const scene6ActivateBtn = document.getElementById("scene6ActivateBtn");
+const scene6ChoiceArea = document.getElementById("scene6ChoiceArea");
+const scene6Choices = document.getElementById("scene6Choices");
+const scene6ChoiceText = document.getElementById("scene6ChoiceText");
+const scene6CurrentFragment = document.getElementById("scene6CurrentFragment");
+
 startButton.addEventListener("click", () => {
   startScreen.classList.add("hidden");
 });
@@ -181,10 +190,26 @@ const modalQuestionText = document.getElementById("modalQuestionText");
 const modalOptionsContainer = document.getElementById("modalOptionsContainer");
 const modalCloseBtn = document.getElementById("modalCloseBtn");
 
+// Add drop zone to fragmentContainer to allow dragging fragments back
+fragmentContainer.addEventListener("dragover", (e) => {
+  e.preventDefault();
+});
+
+fragmentContainer.addEventListener("drop", () => {
+  fragmentContainer.appendChild(dragged);
+});
+
 let boxShuffleInterval = null;
 let secretBoxIndex = null;
 let scene4FoundHiddenFragment = false;
 let isMysteryShuffling = false;
+
+// Scene 6 choice-based system variables
+let scene6State = {
+  currentStep: 1, // 1-4 for the 4 fragments
+  completed: false,
+};
+let scene6CorrectSequence = [2, 3, 4]; // Correct fragments to choose (after fragment 1)
 
 function initGame() {
   // Collect all fragments from all scenes
@@ -221,6 +246,11 @@ function loadScene(index) {
   sceneTitle.innerText = scene.title;
   document.querySelector(".story-box p").innerText = scene.description;
 
+  // Load tutorial image
+  const tutorialImg = document.getElementById("tutorialImg");
+  tutorialImg.src = "assets/shared/tutorial-img.png";
+  tutorialImg.alt = `Hướng dẫn cho ${scene.title}`;
+
   fragmentContainer.innerHTML = "";
   dropContainer.innerHTML = "";
 
@@ -231,6 +261,19 @@ function loadScene(index) {
   hintShown = false;
   document.getElementById("checkBtn").innerText = "Kiểm Tra";
   document.getElementById("resetBtn").style.display = "flex";
+
+  // Scene 6 special: choice-based system
+  if (index === 5) {
+    dropContainer.style.display = "none";
+    fragmentContainer.style.display = "none";
+    scene6ChoiceContainer.classList.remove("hidden");
+    initializeScene6();
+    return;
+  } else {
+    dropContainer.style.display = "flex";
+    fragmentContainer.style.display = "flex";
+    scene6ChoiceContainer.classList.add("hidden");
+  }
 
   // CREATE DROP ZONES
   for (let i = 1; i <= scene.dropCount; i++) {
@@ -536,6 +579,11 @@ function resetScene() {
     return;
   }
 
+  if (currentScene === 5) {
+    loadScene(currentScene);
+    return;
+  }
+
   document.querySelectorAll(".drop-zone img").forEach((img) => {
     fragmentContainer.appendChild(img);
   });
@@ -554,6 +602,14 @@ function resetScene() {
 }
 
 document.getElementById("checkBtn").addEventListener("click", () => {
+  // Scene 6 special handling
+  if (currentScene === 5) {
+    if (scene6State.completed) {
+      nextScene();
+    }
+    return;
+  }
+
   if (currentScene === 3 && !scene4FoundHiddenFragment) {
     result.innerHTML =
       "⚠️ Bạn phải mở hộp bí ẩn và tìm mảnh 3 trước khi kiểm tra.";
@@ -562,11 +618,6 @@ document.getElementById("checkBtn").addEventListener("click", () => {
 
   if (sceneComplete) {
     nextScene();
-    return;
-  }
-
-  if (hintShown) {
-    resetScene();
     return;
   }
 
@@ -597,6 +648,8 @@ document.getElementById("checkBtn").addEventListener("click", () => {
     }
 
     document.getElementById("resetBtn").style.display = "none";
+    document.getElementById("hintBox").classList.add("hidden");
+    hintShown = false;
   } else {
     const hintBox = document.getElementById("hintBox");
     hintBox.innerHTML = scenes[currentScene].hint;
@@ -604,8 +657,6 @@ document.getElementById("checkBtn").addEventListener("click", () => {
     result.innerHTML = "";
     memoryBox.classList.add("hidden");
     hintShown = true;
-    document.getElementById("checkBtn").innerText = "Thử Lại";
-    document.getElementById("resetBtn").style.display = "none";
   }
 });
 
@@ -613,7 +664,7 @@ function nextScene() {
   currentScene++;
 
   if (currentScene >= scenes.length) {
-    gameContainer.classList.add("hidden");
+    document.getElementById("gameWrapper").classList.add("hidden");
     galleryPage.classList.remove("hidden");
     currentGalleryIndex = 0;
     showGalleryImage();
@@ -668,6 +719,7 @@ document.getElementById("nextBtn").addEventListener("click", () => {
 document.getElementById("nextSectionBtn").addEventListener("click", () => {
   galleryPage.classList.add("hidden");
   questionsPage.classList.remove("hidden");
+  document.body.classList.add("questions-mode");
   currentQuestionIndex = 0;
   loadQuestion();
 });
@@ -732,6 +784,7 @@ function handleQuestionAnswer(btnElement, isCorrect, allOptions) {
 }
 
 function showCompletionPage() {
+  document.body.classList.remove("questions-mode");
   questionsPage.innerHTML = `
     <div class="questions-container">
       <h2>🎉 Chúc mừng!</h2>
@@ -798,6 +851,9 @@ function handleFragmentUnlockAnswer(
     setTimeout(() => {
       showSuccessPopup("✅ Chính xác! Mảnh đã mở khóa.");
       closeFragmentModal();
+      closeZoomModal();
+      // Remove focus from fragment to prevent accidental zoom
+      fragmentElement.blur();
     }, 500);
   } else {
     // Wrong answer - show popup to retry
@@ -929,6 +985,146 @@ style.textContent = `
   }
 `;
 document.head.appendChild(style);
+
+// ========== SCENE 6 CHOICE-BASED SYSTEM ==========
+
+function initializeScene6() {
+  const scene = scenes[5];
+  scene6State = { currentStep: 1, completed: false };
+  scene6CorrectSequence = [2, 3, 4];
+
+  // Show first fragment
+  const firstFragment = scene.fragments.find((f) => f.id === 1);
+  if (firstFragment) {
+    scene6CurrentFragment.src = firstFragment.src;
+    scene6CurrentFragment.alt = `Fragment 1`;
+  }
+
+  // Reset choice area
+  scene6ChoiceArea.classList.add("hidden");
+  scene6Choices.innerHTML = "";
+  scene6ActivateBtn.style.display = "block";
+
+  // Clear result
+  result.innerHTML = "";
+  memoryBox.classList.add("hidden");
+  document.getElementById("hintBox").classList.add("hidden");
+
+  // Remove old event listener and add new one
+  scene6ActivateBtn.removeEventListener("click", handleScene6Activate);
+  scene6ActivateBtn.addEventListener("click", handleScene6Activate);
+}
+
+function handleScene6Activate() {
+  // Hide display area and show choice area
+  document.querySelector(".scene6-display-area").classList.add("hidden");
+
+  // Show choice area with 2 images: sc6_fg2 and a random image
+  const scene = scenes[5];
+  const currentStep = scene6State.currentStep;
+  const correctFragmentId = scene6CorrectSequence[currentStep - 1];
+  const correctFragment = scene.fragments.find(
+    (f) => f.id === correctFragmentId,
+  );
+
+  // Get a random incorrect fragment from remaining fragments
+  const availableFragments = scene.fragments.filter(
+    (f) => f.id !== 1 && f.id !== correctFragmentId,
+  );
+  const randomIncorrectFragment =
+    availableFragments[Math.floor(Math.random() * availableFragments.length)];
+
+  scene6ChoiceText.innerText = `Chọn mảnh ${currentStep + 1}`;
+  scene6Choices.innerHTML = "";
+
+  // Shuffle which side the images appear on
+  const choices = [correctFragment, randomIncorrectFragment];
+  const shuffledChoices = shuffleArray(choices);
+
+  // Create container for 2 images
+  const container = document.createElement("div");
+  container.classList.add("scene6-images-container");
+
+  shuffledChoices.forEach((frag) => {
+    const wrapper = document.createElement("div");
+    wrapper.classList.add("scene6-image-wrapper");
+    wrapper.dataset.fragmentId = frag.id;
+
+    const img = document.createElement("img");
+    img.src = frag.src;
+    img.alt = `Fragment ${frag.id}`;
+
+    const label = document.createElement("span");
+    label.innerText = `Mảnh ${frag.id}`;
+
+    wrapper.appendChild(img);
+    wrapper.appendChild(label);
+
+    // Click on image to zoom/enlarge
+    img.addEventListener("click", (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      openZoomModal(img.src);
+    });
+
+    // Click on label or wrapper to select the fragment
+    label.addEventListener("click", (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      handleScene6Choice(frag.id, correctFragmentId, wrapper);
+    });
+
+    container.appendChild(wrapper);
+  });
+
+  scene6Choices.appendChild(container);
+  scene6ChoiceArea.classList.remove("hidden");
+}
+
+function handleScene6Choice(selectedId, correctId, imageWrapper) {
+  const scene = scenes[5];
+  const allWrappers = document.querySelectorAll(".scene6-image-wrapper");
+  allWrappers.forEach((wrapper) => wrapper.classList.add("disabled"));
+
+  if (selectedId === correctId) {
+    // Correct choice
+    imageWrapper.classList.add("correct");
+    result.innerHTML = "✅ Chính xác!";
+
+    setTimeout(() => {
+      if (scene6State.currentStep < 3) {
+        // Move to next step and show next choices
+        scene6State.currentStep++;
+        result.innerHTML = "";
+
+        // Auto-activate next choice
+        handleScene6Activate();
+      } else {
+        // All steps completed
+        scene6State.completed = true;
+        memoryBox.innerText = scene.memory;
+        memoryBox.classList.remove("hidden");
+        result.innerHTML = "🎬 Mảnh Ký Ức Hoàn Chỉnh";
+        document.getElementById("checkBtn").innerText =
+          "📚 Xem lại toàn bộ ký ức";
+        document.getElementById("resetBtn").style.display = "none";
+        showCompleteModal(scene.memory, true);
+      }
+    }, 1000);
+  } else {
+    // Wrong choice
+    imageWrapper.classList.add("wrong");
+    result.innerHTML = "";
+
+    const hintBox = document.getElementById("hintBox");
+    hintBox.innerHTML = scene.hint;
+    hintBox.classList.remove("hidden");
+
+    setTimeout(() => {
+      allWrappers.forEach((wrapper) => wrapper.classList.remove("disabled"));
+    }, 1000);
+  }
+}
 
 // ========== IMAGE ZOOM FUNCTIONALITY ==========
 
