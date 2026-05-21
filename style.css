@@ -477,7 +477,8 @@ button:hover {
   border-radius: 29px;
   padding: 29px 32px;
   box-shadow: 0 24px 80px rgba(15, 23, 42, 0.18);
-  text-align: center;
+  display: flex;
+  flex-direction: column;
 }
 
 .complete-modal-content h3 {
@@ -486,6 +487,7 @@ button:hover {
   color: #0f172a;
   font-family: "Caveat", cursive;
   font-weight: 700;
+  text-align: center;
 }
 
 .complete-subtitle {
@@ -497,6 +499,7 @@ button:hover {
   font-family: "Caveat", cursive;
   font-size: 0.99rem;
   font-weight: 700;
+  text-align: center;
 }
 
 .complete-memory {
@@ -510,25 +513,34 @@ button:hover {
   font-family: "Fredoka", sans-serif;
   font-weight: 600;
   font-size: 0.945rem;
+  flex-grow: 1;
 }
 
 #completeNextBtn {
-  background: linear-gradient(135deg, #2563eb, #6366f1);
-  color: white;
-  border: none;
+  display: none;
+  background: white;
+  color: #ff69b4;
+  border: 2px solid #ff69b4;
   border-radius: 999px;
   padding: 14px 38px;
   font-size: 1rem;
   font-weight: 700;
   cursor: pointer;
-  box-shadow: 0 18px 40px rgba(59, 130, 246, 0.22);
+  box-shadow: 0 18px 40px rgba(255, 105, 180, 0.22);
   transition:
     transform 0.2s ease,
     opacity 0.2s ease;
+  align-self: flex-end;
 }
 
 #completeNextBtn:hover {
   transform: translateY(-2px);
+  background: #ff69b4;
+  color: white;
+}
+
+.complete-modal-content #completeNextBtn {
+  display: block;
 }
 
 .memory-box {
@@ -550,11 +562,27 @@ button:hover {
 .gallery-page {
   text-align: center;
   margin-top: 27px;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
 }
 
 .gallery-page h2 {
   margin-bottom: 27px;
   font-size: 25px;
+  font-family: "Caveat", cursive;
+  font-weight: 700;
+  color: #0f172a;
+}
+
+.gallery-hint {
+  font-size: 12px;
+  color: #999;
+  margin-top: 15px;
+  font-style: italic;
 }
 
 .gallery-container {
@@ -571,31 +599,71 @@ button:hover {
   display: flex;
   align-items: center;
   justify-content: center;
-  border: 2px solid #666;
+  background: linear-gradient(135deg, #f5f5f5 0%, #e8e8e8 100%);
   border-radius: 11px;
-  background: #1a1a1a;
+  position: relative;
+  perspective: 1500px;
+  transform-style: preserve-3d;
+  box-shadow:
+    0 20px 60px rgba(0, 0, 0, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2),
+    inset -2px 0 10px rgba(0, 0, 0, 0.1);
+  border: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.gallery-image-wrapper::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    90deg,
+    rgba(0, 0, 0, 0.08) 0%,
+    rgba(0, 0, 0, 0.02) 20%,
+    transparent 50%,
+    rgba(0, 0, 0, 0.02) 80%,
+    rgba(0, 0, 0, 0.08) 100%
+  );
+  pointer-events: none;
+  border-radius: 11px;
+  z-index: 2;
 }
 
 #galleryImage {
-  max-width: 100%;
-  max-height: 100%;
+  max-width: 95%;
+  max-height: 95%;
   border-radius: 9px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  will-change: transform;
+  position: relative;
+  z-index: 1;
 }
 
 .gallery-btn {
-  background: #4caf50;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   color: white;
   border: none;
-  padding: 14px 18px;
-  font-size: 22px;
-  border-radius: 7px;
+  padding: 12px 20px;
+  font-size: 24px;
+  border-radius: 50%;
   cursor: pointer;
   font-weight: bold;
-  transition: background 0.3s;
+  transition: all 0.3s ease;
+  width: 50px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
 }
 
 .gallery-btn:hover {
-  background: #45a049;
+  transform: scale(1.1) translateY(-3px);
+  box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6);
+  background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
+}
+
+.gallery-btn:active {
+  transform: scale(0.95);
 }
 
 .gallery-counter {
@@ -1077,11 +1145,12 @@ button:hover {
   display: flex;
   flex-direction: column;
   gap: 12px;
-  padding: 15px;
-  background: rgba(255, 255, 255, 0.95);
+  padding: 20px;
+  background: transparent;
   border-radius: 15px;
   animation: slideDown 0.3s ease-out;
   width: 100%;
+  max-width: 900px;
 }
 
 .scene6-choice-content {
@@ -1096,10 +1165,48 @@ button:hover {
 }
 
 .scene6-choice-text {
-  font-size: 16px;
-  font-weight: 600;
+  font-size: 18px;
+  font-weight: 700;
   color: #111827;
   text-align: center;
+  font-family: "Caveat", cursive;
+  letter-spacing: 2px;
+  line-height: 1.6;
+  padding: 20px;
+  animation: none;
+}
+
+#scene6ChoiceText {
+  font-size: 18px;
+  font-weight: 700;
+  color: #111827;
+  text-align: center;
+  font-family: "Caveat", cursive;
+  letter-spacing: 2px;
+  line-height: 1.6;
+  padding: 20px;
+  animation: none;
+}
+
+@keyframes eldringGlow {
+  0% {
+    text-shadow:
+      0 0 10px rgba(212, 175, 55, 0.6),
+      0 0 20px rgba(212, 175, 55, 0.4),
+      2px 2px 4px rgba(0, 0, 0, 0.8);
+  }
+  50% {
+    text-shadow:
+      0 0 15px rgba(212, 175, 55, 0.8),
+      0 0 25px rgba(212, 175, 55, 0.6),
+      2px 2px 4px rgba(0, 0, 0, 0.8);
+  }
+  100% {
+    text-shadow:
+      0 0 10px rgba(212, 175, 55, 0.6),
+      0 0 20px rgba(212, 175, 55, 0.4),
+      2px 2px 4px rgba(0, 0, 0, 0.8);
+  }
 }
 
 .scene6-choices {
@@ -1160,24 +1267,25 @@ button:hover {
 /* Scene 6 - 2 Images Side by Side Layout */
 .scene6-images-container {
   display: flex;
-  gap: 12px;
+  gap: 30px;
   justify-content: center;
-  align-items: center;
+  align-items: flex-start;
   width: 100%;
   flex-wrap: nowrap;
+  padding: 20px;
 }
 
 .scene6-image-wrapper {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 6px;
+  gap: 12px;
   cursor: pointer;
   transition: all 0.3s ease;
 }
 
 .scene6-image-wrapper:hover:not(.disabled) {
-  transform: scale(1.08);
+  transform: scale(1.02);
 }
 
 .scene6-image-wrapper.disabled {
@@ -1186,31 +1294,61 @@ button:hover {
 }
 
 .scene6-image-wrapper img {
-  width: 90px;
-  height: 120px;
+  width: 280px;
+  height: 350px;
   object-fit: contain;
-  border: 3px solid #ff69b4;
-  border-radius: 10px;
-  padding: 3px;
+  border: 4px solid #ff69b4;
+  border-radius: 15px;
+  padding: 8px;
   background: rgba(255, 105, 180, 0.1);
   transition: all 0.3s ease;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
 }
 
 .scene6-image-wrapper:hover:not(.disabled) img {
   border-color: #ff1493;
-  box-shadow: 0 4px 15px rgba(255, 105, 180, 0.4);
+  box-shadow: 0 12px 36px rgba(255, 105, 180, 0.5);
+  transform: translateY(-5px);
 }
 
 .scene6-image-wrapper.correct img {
   border-color: #4caf50;
-  box-shadow: 0 4px 15px rgba(76, 175, 80, 0.5);
+  box-shadow: 0 8px 24px rgba(76, 175, 80, 0.6);
   animation: correctPulse 0.5s ease-out;
 }
 
 .scene6-image-wrapper.wrong img {
   border-color: #f44336;
-  box-shadow: 0 4px 15px rgba(244, 67, 54, 0.5);
+  box-shadow: 0 8px 24px rgba(244, 67, 54, 0.6);
   animation: wrongShake 0.5s ease-out;
+}
+
+.scene6-image-wrapper span {
+  display: none;
+}
+
+.scene6-image-wrapper button {
+  background: linear-gradient(135deg, #ff69b4 0%, #ff1493 100%);
+  color: white;
+  border: none;
+  padding: 12px 32px;
+  border-radius: 25px;
+  font-size: 16px;
+  font-weight: 700;
+  font-family: "Caveat", cursive;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(255, 105, 180, 0.4);
+}
+
+.scene6-image-wrapper button:hover:not(:disabled) {
+  transform: scale(1.08);
+  box-shadow: 0 6px 18px rgba(255, 105, 180, 0.6);
+}
+
+.scene6-image-wrapper button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
 }
 
 @keyframes slideDown {
@@ -1248,3 +1386,5 @@ button:hover {
     transform: translateX(10px);
   }
 }
+
+/* FLIP BOOK STYLES */

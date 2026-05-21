@@ -130,10 +130,80 @@ const questions = [
     situation: "Minh mất ngủ lúc 2h sáng.",
     question: "Ý thức Minh đang phản ánh điều gì?",
     options: [
-      { text: "A. Ước mơ", correct: false },
-      { text: "B. Áp lực từ thực tế", correct: true },
-      { text: "C. Sự tưởng tượng", correct: false },
-      { text: "D. Ký ức", correct: false },
+      { text: "Ước mơ", correct: false },
+      { text: "Áp lực từ thực tế", correct: true },
+      { text: "Sự tưởng tượng", correct: false },
+      { text: "Ký ức", correct: false },
+    ],
+  },
+  {
+    situation: "Minh tin sau tốt nghiệp mọi thứ sẽ dễ dàng.",
+    question: "Đây là biểu hiện mâu thuẫn nào?",
+    options: [
+      { text: "Mâu thuẫn giữa cá nhân và xã hội", correct: false },
+      { text: "Mâu thuẫn giữa lý tưởng và thực tế", correct: true },
+      { text: "Mâu thuẫn giữa vật chất và ý thức", correct: false },
+      { text: "Mâu thuẫn giữa cũ và mới", correct: false },
+    ],
+  },
+  {
+    situation: "Email từ chối liên tục.",
+    question: "Thực tế này thuộc phạm trù gì?",
+    options: [
+      { text: "Ý thức", correct: false },
+      { text: "Vật chất khách quan", correct: true },
+      { text: "Tâm lý", correct: false },
+      { text: "Lý tưởng", correct: false },
+    ],
+  },
+  {
+    situation: "Minh muốn theo đam mê nhưng cần tiền.",
+    question: "Tình huống này thuộc quy luật nào?",
+    options: [
+      { text: "Lượng đổi chất đổi", correct: false },
+      { text: "Phủ định của phủ định", correct: false },
+      { text: "Thống nhất và đấu tranh của các mặt đối lập", correct: true },
+      { text: "Quan hệ phổ biến", correct: false },
+    ],
+  },
+  {
+    situation: "Minh nghi ngờ bản thân liệu mình có thực sự phù hợp.",
+    question: "Ý thức đang phản ánh điều gì?",
+    options: [
+      { text: "Ước mơ", correct: false },
+      { text: "Khó khăn thực tế", correct: true },
+      { text: "Ký ức cũ", correct: false },
+      { text: "Tương lai", correct: false },
+    ],
+  },
+  {
+    situation: "Những thay đổi nhỏ diễn ra liên tục qua nhiều ngày.",
+    question: "Quá trình này thuộc quy luật nào?",
+    options: [
+      { text: "Phủ định", correct: false },
+      { text: "Lượng đổi dẫn đến chất đổi", correct: true },
+      { text: "Quan hệ phổ biến", correct: false },
+      { text: "Phát triển tuần hoàn", correct: false },
+    ],
+  },
+  {
+    situation: "Minh nhìn lại ảnh tốt nghiệp và cười nhẹ.",
+    question: "Đây là so sánh giữa gì?",
+    options: [
+      { text: "Gia đình và xã hội", correct: false },
+      { text: "Quá khứ và hiện tại", correct: true },
+      { text: "Hiện tại và tương lai", correct: false },
+      { text: "Lý tưởng và thực tế", correct: false },
+    ],
+  },
+  {
+    situation: "Mâu thuẫn xuất hiện xuyên suốt cả bộ phim.",
+    question: "Vai trò của mâu thuẫn là gì?",
+    options: [
+      { text: "Gây bế tắc", correct: false },
+      { text: "Động lực phát triển", correct: true },
+      { text: "Làm chậm tiến bộ", correct: false },
+      { text: "Không quan trọng", correct: false },
     ],
   },
 ];
@@ -210,6 +280,11 @@ let scene6State = {
   completed: false,
 };
 let scene6CorrectSequence = [2, 3, 4]; // Correct fragments to choose (after fragment 1)
+let scene6Hints = [
+  "Không còn task pending, chỉ còn những câu chuyện chưa kể",
+  "Có lẽ chữa lành bắt đầu từ những buổi sáng yên tĩnh",
+  "Có lẽ sức mạnh thật sự của Malenia… là vẫn tiếp tục bước đi cùng quá khứ.",
+];
 
 function initGame() {
   // Collect all fragments from all scenes
@@ -260,6 +335,7 @@ function loadScene(index) {
   sceneComplete = false;
   hintShown = false;
   document.getElementById("checkBtn").innerText = "Kiểm Tra";
+  document.getElementById("checkBtn").style.display = "flex";
   document.getElementById("resetBtn").style.display = "flex";
 
   // Scene 6 special: choice-based system
@@ -597,6 +673,7 @@ function resetScene() {
   document.getElementById("hintBox").classList.add("hidden");
   sceneComplete = false;
   hintShown = false;
+  document.getElementById("checkBtn").style.display = "flex";
   document.getElementById("checkBtn").innerText = "Kiểm Tra";
   document.getElementById("resetBtn").style.display = "flex";
 }
@@ -665,8 +742,8 @@ function nextScene() {
 
   if (currentScene >= scenes.length) {
     document.getElementById("gameWrapper").classList.add("hidden");
-    galleryPage.classList.remove("hidden");
     currentGalleryIndex = 0;
+    // Show gallery directly
     showGalleryImage();
     return;
   }
@@ -688,17 +765,42 @@ function showCompleteModal(memoryText, isLastScene) {
   completeNextBtn.innerText = isLastScene
     ? "📚 Xem lại toàn bộ ký ức"
     : "Cảnh Tiếp Theo";
+  memoryBox.classList.add("hidden");
+  result.innerHTML = "";
+  document.getElementById("checkBtn").style.display = "none";
   completeModal.classList.remove("hidden");
 }
 
 function hideCompleteModal() {
   completeModal.classList.add("hidden");
+  document.getElementById("checkBtn").style.display = "flex";
 }
 
 function showGalleryImage() {
+  galleryPage.classList.remove("hidden");
   if (allFragments.length > 0) {
     galleryImage.src = allFragments[currentGalleryIndex].src;
     currentIndexDisplay.innerText = currentGalleryIndex + 1;
+  }
+}
+
+// Swipe gesture variables
+let touchStartX = 0;
+let touchEndX = 0;
+
+function handleSwipe() {
+  if (touchEndX < touchStartX - 50) {
+    // Swiped left - next image
+    if (currentGalleryIndex < allFragments.length - 1) {
+      currentGalleryIndex++;
+      showGalleryImage();
+    }
+  } else if (touchEndX > touchStartX + 50) {
+    // Swiped right - previous image
+    if (currentGalleryIndex > 0) {
+      currentGalleryIndex--;
+      showGalleryImage();
+    }
   }
 }
 
@@ -715,6 +817,41 @@ document.getElementById("nextBtn").addEventListener("click", () => {
     showGalleryImage();
   }
 });
+
+// Keyboard navigation
+document.addEventListener("keydown", (e) => {
+  if (galleryPage.classList.contains("hidden")) return;
+
+  if (e.key === "ArrowLeft") {
+    if (currentGalleryIndex > 0) {
+      currentGalleryIndex--;
+      showGalleryImage();
+    }
+  } else if (e.key === "ArrowRight") {
+    if (currentGalleryIndex < allFragments.length - 1) {
+      currentGalleryIndex++;
+      showGalleryImage();
+    }
+  }
+});
+
+// Touch/Swipe events
+galleryPage.addEventListener(
+  "touchstart",
+  (e) => {
+    touchStartX = e.changedTouches[0].screenX;
+  },
+  false,
+);
+
+galleryPage.addEventListener(
+  "touchend",
+  (e) => {
+    touchEndX = e.changedTouches[0].screenX;
+    handleSwipe();
+  },
+  false,
+);
 
 document.getElementById("nextSectionBtn").addEventListener("click", () => {
   galleryPage.classList.add("hidden");
@@ -1034,7 +1171,7 @@ function handleScene6Activate() {
   const randomIncorrectFragment =
     availableFragments[Math.floor(Math.random() * availableFragments.length)];
 
-  scene6ChoiceText.innerText = `Chọn mảnh ${currentStep + 1}`;
+  scene6ChoiceText.innerText = scene6Hints[currentStep - 1];
   scene6Choices.innerHTML = "";
 
   // Shuffle which side the images appear on
@@ -1054,11 +1191,12 @@ function handleScene6Activate() {
     img.src = frag.src;
     img.alt = `Fragment ${frag.id}`;
 
-    const label = document.createElement("span");
-    label.innerText = `Mảnh ${frag.id}`;
+    const selectBtn = document.createElement("button");
+    selectBtn.innerText = "Chọn";
+    selectBtn.type = "button";
 
     wrapper.appendChild(img);
-    wrapper.appendChild(label);
+    wrapper.appendChild(selectBtn);
 
     // Click on image to zoom/enlarge
     img.addEventListener("click", (e) => {
@@ -1067,10 +1205,11 @@ function handleScene6Activate() {
       openZoomModal(img.src);
     });
 
-    // Click on label or wrapper to select the fragment
-    label.addEventListener("click", (e) => {
+    // Click on select button to select the fragment
+    selectBtn.addEventListener("click", (e) => {
       e.preventDefault();
       e.stopPropagation();
+      selectBtn.disabled = true;
       handleScene6Choice(frag.id, correctFragmentId, wrapper);
     });
 
