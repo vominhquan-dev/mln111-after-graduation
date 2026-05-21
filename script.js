@@ -1047,9 +1047,9 @@ function showSuccessPopup(message) {
     color: #000;
     padding: 30px 40px;
     border-radius: 12px;
-    font-size: 18px;
+    font-size: 28px;
     font-weight: bold;
-    font-family: "Caveat", cursive;
+    font-family: "Fredoka", cursive;
     z-index: 2000;
     box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
     animation: popupSlideIn 0.3s ease;
@@ -1078,9 +1078,9 @@ function showWrongPopup(message) {
     color: #c00;
     padding: 30px 40px;
     border-radius: 12px;
-    font-size: 18px;
+    font-size: 28px;
     font-weight: bold;
-    font-family: "Caveat", cursive;
+    font-family: "Fredoka", cursive;
     z-index: 2000;
     box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
     animation: popupSlideIn 0.3s ease;
