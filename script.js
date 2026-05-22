@@ -2,7 +2,7 @@ const scenes = [
   {
     title: "Cảnh 1 — Tốt nghiệp",
     description:
-      "Mình từng nghĩ… sau khi tốt nghiệp, mọi thứ sẽ dễ dàng hơn. Có công việc tốt. Có tiền. Có một cuộc sống ổn định như mình từng tưởng tượng.",
+      "Mình từng nghĩ… sau khi tốt nghiệp, mọi thứ sẽ dễ dàng hơn. Có công việc tốt. Có tiền. Có một cuộc sống ổn định như mình từng tưởng tượng. Giống như loài ve sầu, dành hai năm dưới lòng đất chỉ để một lần gặp gỡ đồng loại và tung cánh giữa bầu trời.",
     dropCount: 3,
     fragments: [
       { id: 1, src: "assets/scene1/sc1_fg1.png" },
@@ -17,7 +17,7 @@ const scenes = [
   {
     title: "Cảnh 2 — Xin việc",
     description:
-      "Nhưng hóa ra… Tốt nghiệp chỉ là bắt đầu của một áp lực khác. Không ai còn hỏi mình được bao nhiêu điểm. Người ta bắt đầu hỏi: 'Khi nào có việc?' 'Lương bao nhiêu?' 'Ổn định chưa?'",
+      "Nhưng hóa ra… Tốt nghiệp chỉ là bắt đầu của một áp lực khác. Không ai còn hỏi mình được bao nhiêu điểm. Người ta bắt đầu hỏi: 'Khi nào có việc?' 'Lương bao nhiêu?' 'Ổn định chưa?' Người ta chỉ nhìn thấy một bản CV. Nhưng phía sau nó là hàng trăm giờ học tập, thất vọng và cố gắng để chứng minh bản thân xứng đáng.",
     dropCount: 3,
     fragments: [
       { id: 1, src: "assets/scene2/sc2_fg1.png" },
@@ -25,14 +25,14 @@ const scenes = [
       { id: 3, src: "assets/scene2/sc2_fg3.png" },
     ],
     memory:
-      "Phòng trọ buổi đêm. Mình ngồi trước laptop chỉnh CV, gửi đơn xin việc liên tục. Chuông email rơi lần lượt: 'We regret to inform you…' Lúc 2 giờ sáng, mình nằm nhìn lên trần nhà, tự hỏi liệu mình có thực sự đủ khả năng không.",
+      "Phòng trọ buổi đêm. Mình ngồi trước laptop chỉnh CV, gửi đơn xin việc liên tục. Chuông email rơi lần lượt: 'We regret to inform you…' Lúc 2 giờ sáng, mình nằm nhìn lên trần nhà, tự hỏi liệu mình có thực sự đủ khả năng không. Giữa ánh đèn chưa tắt của thành phố, những lá đơn gửi đi trong im lặng và vài câu hỏi quan tâm chẳng biết trả lời thế nào… dần nhận ra trưởng thành đôi khi chỉ là tiếp tục cố gắng, ngay cả khi lòng mình đang rất mỏi mệt.",
     hint: "💡 Gợi ý: Theo dõi quá trình xin việc: đầu tiên chỉnh CV và gửi đơn, CV bị từ chối và trằn trọc suy nghĩ lúc 2h sáng.",
   },
 
   {
     title: "Cảnh 3 — Mâu Thuẫn",
     description:
-      "Mình muốn theo đuổi điều mình thích. Nhưng mình cũng cần tiền. Mình muốn nghỉ ngơi. Nhưng deadline vẫn tới mỗi ngày. Mình muốn trưởng thành. Nhưng lại sợ thất bại.",
+      "Giữa ánh đèn chưa tắt của thành phố, những lá đơn gửi đi trong im lặng và vài câu hỏi quan tâm chẳng biết trả lời thế nào… cậu dần nhận ra trưởng thành đôi khi chỉ là tiếp tục cố gắng, ngay cả khi lòng mình đang rất mỏi mệt.",
     dropCount: 3,
     fragments: [
       { id: 1, src: "assets/scene3/sc3_fg1.png" },
@@ -47,7 +47,7 @@ const scenes = [
   {
     title: "Cảnh 4 — Khủng Hoảng",
     description:
-      "Có những ngày mình cảm thấy bản thân thật vô dụng. Mình bắt đầu nghi ngờ: Liệu mình có thật sự phù hợp với công việc này không?",
+      "Có những đêm người ta lặng lẽ gõ từng dòng code dưới ánh đèn mờ, ăn vội một ly mì đã nguội, cố tỏ ra ổn giữa hàng chục tin nhắn và deadline chồng chất… chỉ để ngày mai bản thân không phải hối hận vì đã từng bỏ cuộc quá sớm.",
     dropCount: 3,
     fragments: [
       { id: 1, src: "assets/scene4/sc4_fg1.png" },
@@ -62,7 +62,7 @@ const scenes = [
   {
     title: "Cảnh 5 — Thay Đổi Dần",
     description:
-      "Mọi thứ không thay đổi ngay lập tức. Nhưng từng lần thất bại… Từng áp lực nhỏ… Từng trải nghiệm nhỏ… Đang khiến mình thay đổi từng ngày.",
+      "Như một đàn kiến lặng lẽ tha mồi qua từng ngày, cậu cũng bắt đầu từ những đêm tự học một mình, những cuộc trò chuyện để học hỏi thêm từ người khác, rồi lại tiếp tục thức dậy sớm để rèn luyện bản thân… từng chút một trở thành phiên bản tốt hơn.",
     dropCount: 3,
     fragments: [
       { id: 1, src: "assets/scene5/sc5_fg1.png" },
@@ -343,6 +343,8 @@ function loadScene(index) {
     dropContainer.style.display = "none";
     fragmentContainer.style.display = "none";
     scene6ChoiceContainer.classList.remove("hidden");
+    document.getElementById("checkBtn").style.display = "none";
+    document.getElementById("resetBtn").style.display = "none";
     initializeScene6();
     return;
   } else {
